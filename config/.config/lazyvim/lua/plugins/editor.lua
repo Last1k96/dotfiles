@@ -18,5 +18,5 @@ return {
   },
 
   -- mini.surround: add/delete/change surrounding chars (sa/sd/sr)
-  { "echasnovski/mini.surround", version = false, config = true },
+  { "nvim-mini/mini.surround", version = false, config = true },
 }
