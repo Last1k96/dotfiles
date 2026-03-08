@@ -26,14 +26,10 @@ sudo apt-get install -y \
     pipx \
     xclip
 
-# LLVM 20 apt repository
-if [ ! -f /etc/apt/sources.list.d/llvm-20.list ]; then
-    echo "Adding LLVM 20 apt repository..."
-    curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
-    . /etc/os-release
-    echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-20 main" \
-        | sudo tee /etc/apt/sources.list.d/llvm-20.list
-    sudo apt-get update
+# LLVM 20 (official install script)
+if ! command -v clang-20 &>/dev/null; then
+    echo "Installing LLVM 20..."
+    curl -fsSL https://apt.llvm.org/llvm.sh | sudo bash -s -- 20 all
 fi
 
 # C++ development
@@ -43,15 +39,6 @@ sudo apt-get install -y \
     cmake-curses-gui \
     ninja-build \
     gdb \
-    clang-20 \
-    clang-format-20 \
-    clang-tidy-20 \
-    clangd-20 \
-    lld-20 \
-    lldb-20 \
-    libc++-20-dev \
-    libc++abi-20-dev \
-    libclang-20-dev \
     mold \
     valgrind \
     ccache \
