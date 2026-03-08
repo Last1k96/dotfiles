@@ -29,6 +29,7 @@ link() {
 
 # Home directory dotfiles
 link ".zshenv"      "$HOME/.zshenv"
+link ".zshrc"       "$HOME/.zshrc"
 link ".gitconfig"   "$HOME/.gitconfig"
 link ".tmux.conf"   "$HOME/.tmux.conf"
 
