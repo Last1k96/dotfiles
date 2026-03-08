@@ -24,8 +24,7 @@ sudo apt-get install -y \
     fonts-font-awesome \
     python3-pip \
     pipx \
-    xclip \
-    npm
+    xclip
 
 # C++ development
 sudo apt-get install -y \
@@ -89,7 +88,11 @@ fi
 # tree-sitter CLI (needed by nvim-treesitter)
 if ! command -v tree-sitter &>/dev/null; then
     echo "Installing tree-sitter CLI..."
-    sudo npm install -g tree-sitter-cli
+    curl -Lo /tmp/tree-sitter.gz \
+        "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz"
+    gunzip -f /tmp/tree-sitter.gz
+    sudo install -m 755 /tmp/tree-sitter /usr/local/bin/tree-sitter
+    rm /tmp/tree-sitter
 fi
 
 # Lazygit (latest from GitHub releases)
