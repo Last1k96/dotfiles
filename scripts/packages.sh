@@ -26,10 +26,28 @@ sudo apt-get install -y \
     pipx \
     xclip
 
-# LLVM 20 (official install script)
+# LLVM 20 (official install script) — non-fatal, apt.llvm.org can be flaky
 if ! command -v clang-20 &>/dev/null; then
     echo "Installing LLVM 20..."
-    curl -fsSL https://apt.llvm.org/llvm.sh | sudo bash -s -- 20 all
+    if curl -fsSL https://apt.llvm.org/llvm.sh | sudo bash -s -- 20 all; then
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 100
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-20 100
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 100
+        sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-20 100
+        sudo update-alternatives --install /usr/bin/lld lld /usr/bin/lld-20 100
+        sudo update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld-20 100
+        sudo update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-20 100
+        sudo update-alternatives --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-20 100
+        sudo update-alternatives --install /usr/bin/llvm-nm llvm-nm /usr/bin/llvm-nm-20 100
+        sudo update-alternatives --install /usr/bin/llvm-objdump llvm-objdump /usr/bin/llvm-objdump-20 100
+        sudo update-alternatives --install /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-20 100
+        sudo update-alternatives --install /usr/bin/llvm-strip llvm-strip /usr/bin/llvm-strip-20 100
+
+        echo "LLVM 20 installed successfully."
+    else
+        echo "WARNING: LLVM 20 install failed (apt.llvm.org may be unreachable). Skipping."
+    fi
 fi
 
 # C++ development
@@ -55,21 +73,6 @@ sudo apt-get install -y \
     libtool \
     patchelf \
     linux-tools-common
-
-# Set up unversioned symlinks for LLVM 20 tools
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 100
-sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-20 100
-sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 100
-sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-20 100
-sudo update-alternatives --install /usr/bin/lld lld /usr/bin/lld-20 100
-sudo update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld-20 100
-sudo update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-20 100
-sudo update-alternatives --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-20 100
-sudo update-alternatives --install /usr/bin/llvm-nm llvm-nm /usr/bin/llvm-nm-20 100
-sudo update-alternatives --install /usr/bin/llvm-objdump llvm-objdump /usr/bin/llvm-objdump-20 100
-sudo update-alternatives --install /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-20 100
-sudo update-alternatives --install /usr/bin/llvm-strip llvm-strip /usr/bin/llvm-strip-20 100
 
 # Network filesystems
 sudo apt-get install -y \
