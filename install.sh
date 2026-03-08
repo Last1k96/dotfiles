@@ -22,6 +22,6 @@ bash scripts/packages.sh
 echo "=== Creating symlinks ==="
 bash scripts/symlinks.sh
 
+echo ""
 echo "=== Done! ==="
-echo "Switching to zsh..."
-exec zsh -l
+echo "Log out and back in (or restart WSL) for zsh to take effect."
