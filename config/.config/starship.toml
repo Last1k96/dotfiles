@@ -4,14 +4,12 @@ add_newline = false
 
 format = """
 $directory\
-[](fg:fg4 bg:bg1)\
+[](fg:fg4 bg:bg1)\
 $git_branch\
 $git_status\
-[](fg:bg1)\
-$jobs\
-$character"""
+[](fg:bg1) """
 
-right_format = """[](fg:bg1)[$cmd_duration $status ](bg:bg1)"""
+right_format = """[](fg:bg1)[$cmd_duration $status$jobs ](bg:bg1)"""
 
 palette = 'gruvbox_dark'
 
@@ -83,7 +81,7 @@ style = "fg:yellow"
 
 [jobs]
 style = "fg:aqua bg:bg1"
-format = "[$symbol]($style) "
+format = "[$symbol]($style)"
 symbol = "✦"
 number_threshold = 1
 
