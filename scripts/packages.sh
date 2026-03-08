@@ -74,6 +74,16 @@ if ! command -v nvim &>/dev/null; then
     rm /tmp/nvim-linux-x86_64.tar.gz
 fi
 
+# Yazi file manager
+if ! command -v yazi &>/dev/null; then
+    echo "Installing yazi..."
+    curl -Lo /tmp/yazi.zip \
+        https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip
+    unzip -o /tmp/yazi.zip -d /tmp/yazi
+    sudo install -m 755 /tmp/yazi/yazi-x86_64-unknown-linux-gnu/yazi /usr/local/bin/yazi
+    rm -rf /tmp/yazi /tmp/yazi.zip
+fi
+
 # Set zsh as default shell (if not already)
 if [ "$SHELL" != "$(which zsh)" ]; then
     echo "Setting zsh as default shell..."

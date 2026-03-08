@@ -4,3 +4,4 @@
 *~
 config/.config/zsh/plugins/
 config/.config/zsh/.zsh_history
+config/.config/zsh/.zcompdump
