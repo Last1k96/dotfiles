@@ -1,0 +1,8 @@
+[user]
+	name = Maxim Kurin
+	email = kurinmaksim42@gmail.com
+[alias]
+	ch = checkout
+	br = branch
+	st = status
+	amend = commit --amend --no-edit
