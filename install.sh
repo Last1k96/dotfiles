@@ -23,4 +23,5 @@ echo "=== Creating symlinks ==="
 bash scripts/symlinks.sh
 
 echo "=== Done! ==="
-echo "Log out and back in (or run 'exec zsh') to apply shell changes."
+echo "Switching to zsh..."
+exec zsh -l
