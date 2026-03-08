@@ -26,6 +26,16 @@ sudo apt-get install -y \
     pipx \
     xclip
 
+# LLVM 20 apt repository
+if [ ! -f /etc/apt/sources.list.d/llvm-20.list ]; then
+    echo "Adding LLVM 20 apt repository..."
+    curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
+    . /etc/os-release
+    echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-20 main" \
+        | sudo tee /etc/apt/sources.list.d/llvm-20.list
+    sudo apt-get update
+fi
+
 # C++ development
 sudo apt-get install -y \
     build-essential \
@@ -33,11 +43,16 @@ sudo apt-get install -y \
     cmake-curses-gui \
     ninja-build \
     gdb \
-    clang \
-    clang-format \
-    clang-tidy \
-    clangd \
-    lldb \
+    clang-20 \
+    clang-format-20 \
+    clang-tidy-20 \
+    clangd-20 \
+    lld-20 \
+    lldb-20 \
+    libc++-20-dev \
+    libc++abi-20-dev \
+    libclang-20-dev \
+    mold \
     valgrind \
     ccache \
     cppcheck \
@@ -53,6 +68,21 @@ sudo apt-get install -y \
     libtool \
     patchelf \
     linux-tools-common
+
+# Set up unversioned symlinks for LLVM 20 tools
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 100
+sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-20 100
+sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 100
+sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-20 100
+sudo update-alternatives --install /usr/bin/lld lld /usr/bin/lld-20 100
+sudo update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld-20 100
+sudo update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-20 100
+sudo update-alternatives --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-20 100
+sudo update-alternatives --install /usr/bin/llvm-nm llvm-nm /usr/bin/llvm-nm-20 100
+sudo update-alternatives --install /usr/bin/llvm-objdump llvm-objdump /usr/bin/llvm-objdump-20 100
+sudo update-alternatives --install /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-20 100
+sudo update-alternatives --install /usr/bin/llvm-strip llvm-strip /usr/bin/llvm-strip-20 100
 
 # Network filesystems
 sudo apt-get install -y \
@@ -103,6 +133,12 @@ if ! command -v lazygit &>/dev/null; then
         "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     sudo install -m 755 /dev/stdin /usr/local/bin/lazygit < <(tar -xzf /tmp/lazygit.tar.gz -O lazygit)
     rm /tmp/lazygit.tar.gz
+fi
+
+# Tmux Plugin Manager
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing TPM (Tmux Plugin Manager)..."
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
 # SSH key for GitHub
