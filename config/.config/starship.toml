@@ -1,20 +1,37 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
+$username\
+$hostname\
 $directory\
 [](fg:bg1 bg:yellow)\
 $git_branch\
 $git_status\
 [](fg:yellow)\
+$jobs\
 $character"""
+
+right_format = """$cmd_duration $status"""
 
 palette = 'gruvbox_dark'
 
+[username]
+show_always = false
+style_root = "bold fg:red bg:bg1"
+style_user = "fg:fg1 bg:bg1"
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+style = "fg:fg1 bg:bg1"
+format = "[@$hostname]($style) "
+
 [directory]
 style = "bg:bg1 fg:fg1"
-format = "[ $path ]($style)"
+format = "[ $path$read_only ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
+read_only = " 󰌾"
 
 [directory.substitutions]
 "Documents" = "󰈙 "
@@ -27,6 +44,8 @@ truncation_symbol = "…/"
 symbol = "\ue0a0"
 style = "bg:bg1 fg:fg1"
 format = '[[ $symbol $branch ](fg:fg1 bg:bg1)]($style)'
+truncation_length = 32
+truncation_symbol = "…"
 
 [git_status]
 style = "bg:bg1"
@@ -40,7 +59,8 @@ untracked = "?${count}"
 deleted = "✘${count}"
 stashed = "*${count}"
 renamed = "»${count}"
-format = '[([$ahead_behind](fg:#d0d0d0 bg:bg1)[$stashed](fg:#d0d0d0 bg:bg1)[$conflicted](fg:#55ff55 bg:bg1)[$staged](fg:#008000 bg:bg1)[$modified](fg:#808000 bg:bg1)[$untracked](fg:#ff5555 bg:bg1)[$deleted](fg:red bg:bg1)[$renamed](fg:fg4 bg:bg1) )](bg:bg1)'
+format = '[([$ahead_behind](fg:fg3 bg:bg1)[$stashed](fg:fg3 bg:bg1)[$conflicted](fg:aqua bg:bg1)[$staged](fg:green bg:bg1)[$modified](fg:yellow bg:bg1)[$untracked](fg:red bg:bg1)[$deleted](fg:red bg:bg1)[$renamed](fg:fg4 bg:bg1) )](bg:bg1)'
+
 [line_break]
 disabled = true
 
@@ -54,11 +74,21 @@ vimcmd_replace_symbol = '[❮](bold fg:purple bg:bg1)'
 vimcmd_visual_symbol = '[❮](bold fg:yellow bg:bg1)'
 
 [cmd_duration]
-show_milliseconds = true
-format = " in $duration "
+min_time = 3000
+style = "fg:fg4"
+format = "[$duration]($style)"
 disabled = false
-show_notifications = true
-min_time_to_notify = 45000
+
+[status]
+disabled = false
+format = "[$status]($style)"
+style = "fg:red"
+
+[jobs]
+style = "fg:blue bg:bg1"
+format = "[$symbol$number]($style) "
+symbol = "✦"
+number_threshold = 2
 
 [palettes.gruvbox_dark]
 bg0 = "#282828"
