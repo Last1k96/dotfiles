@@ -23,7 +23,9 @@ sudo apt-get install -y \
     mc \
     fonts-font-awesome \
     python3-pip \
-    pipx
+    pipx \
+    xclip \
+    npm
 
 # C++ development
 sudo apt-get install -y \
@@ -82,6 +84,22 @@ if ! command -v yazi &>/dev/null; then
     unzip -o /tmp/yazi.zip -d /tmp/yazi
     sudo install -m 755 /tmp/yazi/yazi-x86_64-unknown-linux-gnu/yazi /usr/local/bin/yazi
     rm -rf /tmp/yazi /tmp/yazi.zip
+fi
+
+# tree-sitter CLI (needed by nvim-treesitter)
+if ! command -v tree-sitter &>/dev/null; then
+    echo "Installing tree-sitter CLI..."
+    sudo npm install -g tree-sitter-cli
+fi
+
+# Lazygit (latest from GitHub releases)
+if ! command -v lazygit &>/dev/null; then
+    echo "Installing lazygit..."
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | jq -r '.tag_name' | sed 's/^v//')
+    curl -Lo /tmp/lazygit.tar.gz \
+        "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    sudo install -m 755 /dev/stdin /usr/local/bin/lazygit < <(tar -xzf /tmp/lazygit.tar.gz -O lazygit)
+    rm /tmp/lazygit.tar.gz
 fi
 
 # SSH key for GitHub
