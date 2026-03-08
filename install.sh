@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_REPO="git@github.com:Last1k96/dotfiles.git"
+DOTFILES_REPO="https://github.com/Last1k96/dotfiles.git"
 DOTFILES_DIR="$HOME/code/dotfiles"
 
 # If not running from the cloned repo, clone it first
