@@ -31,7 +31,7 @@ if [ ! -f /etc/apt/sources.list.d/llvm-20.list ]; then
     echo "Adding LLVM 20 apt repository..."
     curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
     . /etc/os-release
-    echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-20 main" \
+    echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-20 main" \
         | sudo tee /etc/apt/sources.list.d/llvm-20.list
     sudo apt-get update
 fi
