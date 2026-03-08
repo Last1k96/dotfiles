@@ -7,7 +7,7 @@ $directory\
 [](fg:fg4 bg:bg1)\
 $git_branch\
 $git_status\
-[](fg:bg1) """
+[ ](bg:bg1)[](fg:bg1) """
 
 right_format = """[](fg:bg1)[$cmd_duration $status$jobs ](bg:bg1)"""
 
@@ -54,7 +54,7 @@ untracked = " ?${count}"
 deleted = " ✘${count}"
 stashed = " *${count}"
 renamed = " »${count}"
-format = '[([$ahead_behind](fg:gs_ahead bg:bg1)[$stashed](fg:fg3 bg:bg1)[$conflicted](fg:gs_conflict bg:bg1)[$staged](fg:gs_staged bg:bg1)[$modified](fg:gs_unstaged bg:bg1)[$untracked](fg:gs_untracked bg:bg1)[$deleted](fg:gs_untracked bg:bg1)[$renamed](fg:fg4 bg:bg1) )](bg:bg1)'
+format = '[([$ahead_behind](fg:gs_ahead bg:bg1)[$stashed](fg:fg3 bg:bg1)[$conflicted](fg:gs_conflict bg:bg1)[$staged](fg:gs_staged bg:bg1)[$modified](fg:gs_unstaged bg:bg1)[$untracked](fg:gs_untracked bg:bg1)[$deleted](fg:gs_untracked bg:bg1)[$renamed](fg:fg4 bg:bg1))](bg:bg1)'
 
 [line_break]
 disabled = true
