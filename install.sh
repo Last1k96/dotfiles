@@ -22,6 +22,9 @@ bash scripts/packages.sh
 echo "=== Creating symlinks ==="
 bash scripts/symlinks.sh
 
+# Switch remote to SSH now that the SSH key has been generated
+git -C "$DOTFILES_DIR" remote set-url origin git@github.com:Last1k96/dotfiles.git
+
 echo ""
 echo "=== Done! ==="
 echo "Log out and back in (or restart WSL) for zsh to take effect."
