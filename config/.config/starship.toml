@@ -6,7 +6,9 @@ format = """
 $directory\
 [](fg:fg4 bg:bg1)\
 $git_branch\
+${custom.git_staged}\
 $git_status\
+${custom.git_deleted}\
 [ ](bg:bg1)[](fg:bg1) """
 
 right_format = """[](fg:bg1)[$cmd_duration $status$jobs ](bg:bg1)"""
@@ -48,13 +50,23 @@ ahead = " ⇡${count}"
 behind = " ⇣${count}"
 diverged = " ⇡${ahead_count}⇣${behind_count}"
 conflicted = " ~${count}"
-staged = " +${count}"
 modified = " !${count}"
 untracked = " ?${count}"
-deleted = " ✘${count}"
 stashed = " *${count}"
 renamed = " »${count}"
-format = '[([$ahead_behind](fg:gs_ahead bg:bg1)[$stashed](fg:fg3 bg:bg1)[$conflicted](fg:gs_conflict bg:bg1)[$staged](fg:gs_staged bg:bg1)[$modified](fg:gs_unstaged bg:bg1)[$untracked](fg:gs_untracked bg:bg1)[$deleted](fg:gs_untracked bg:bg1)[$renamed](fg:fg4 bg:bg1))](bg:bg1)'
+format = '[([$ahead_behind](fg:gs_ahead bg:bg1)[$stashed](fg:fg3 bg:bg1)[$conflicted](fg:gs_conflict bg:bg1)[$modified](fg:gs_unstaged bg:bg1)[$untracked](fg:gs_untracked bg:bg1)[$renamed](fg:fg4 bg:bg1))](bg:bg1)'
+
+[custom.git_staged]
+command = 'git diff --cached --numstat | wc -l | tr -d " "'
+when = 'git diff --cached --quiet; [ $? -eq 1 ]'
+format = '[ +$output](fg:gs_staged bg:bg1)'
+shell = ['bash', '--noprofile', '--norc']
+
+[custom.git_deleted]
+command = 'git diff --name-only --diff-filter=D | wc -l | tr -d " "'
+when = 'test -n "$(git diff --name-only --diff-filter=D)"'
+format = '[ ✘$output](fg:gs_untracked bg:bg1)'
+shell = ['bash', '--noprofile', '--norc']
 
 [line_break]
 disabled = true

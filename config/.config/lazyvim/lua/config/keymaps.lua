@@ -38,13 +38,15 @@ vim.keymap.set("n", "<A-Down>", "<cmd>resize -2<cr>", { desc = "Decrease height"
 vim.keymap.set("n", "q:", "<nop>", { desc = "Disable q: window" })
 
 -- JIRA link: extract number from word under cursor, copy JIRA URL
--- Requires a lua/jira_config.lua file with: return { prefix = "https://jira.example.com/browse/PROJ-" }
+-- Config lives outside dotfiles to avoid leaking internal JIRA URLs.
+-- See ~/scripts/jira_config.lua (created by install.sh)
 vim.api.nvim_create_user_command("CopyJiraLink", function()
   local word = vim.fn.expand("<cWORD>")
   local number = word:match("%d+")
   if number then
-    local ok, jira = pcall(require, "jira_config")
-    local prefix = ok and jira.prefix or "https://jira.example.com/browse/PROJ-"
+    local config_path = vim.fn.expand("~/scripts/jira_config.lua")
+    local ok, jira = pcall(dofile, config_path)
+    local prefix = ok and jira and jira.prefix or "https://jira.example.com/browse/PROJ-"
     local link = prefix .. number
     vim.fn.setreg("+", link)
     vim.notify("Copied: " .. link)
