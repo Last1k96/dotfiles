@@ -18,11 +18,15 @@ vim.keymap.set("v", "<C-Down>", ":m '>+1<CR>gv=gv", { desc = "Move selection dow
 -- Replace word under cursor globally
 vim.keymap.set("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word globally" })
 
--- Switch between windows with Ctrl+Arrow
+-- Switch between windows with Ctrl+Arrow (works from normal and terminal mode)
 vim.keymap.set("n", "<C-Left>", "<C-w>h", { desc = "Go to left window" })
 vim.keymap.set("n", "<C-Down>", "<C-w>j", { desc = "Go to lower window" })
 vim.keymap.set("n", "<C-Up>", "<C-w>k", { desc = "Go to upper window" })
 vim.keymap.set("n", "<C-Right>", "<C-w>l", { desc = "Go to right window" })
+vim.keymap.set("t", "<C-Left>", "<C-\\><C-n><C-w>h", { desc = "Go to left window" })
+vim.keymap.set("t", "<C-Down>", "<C-\\><C-n><C-w>j", { desc = "Go to lower window" })
+vim.keymap.set("t", "<C-Up>", "<C-\\><C-n><C-w>k", { desc = "Go to upper window" })
+vim.keymap.set("t", "<C-Right>", "<C-\\><C-n><C-w>l", { desc = "Go to right window" })
 
 -- Resize windows with Alt+Arrow
 vim.keymap.set("n", "<A-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease width" })

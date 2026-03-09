@@ -14,5 +14,8 @@ vim.opt.scrolloff = 16
 -- Disable line wrapping
 vim.opt.wrap = false
 
+-- Fast escape sequence handling (fixes arrow key delay in terminal)
+vim.opt.ttimeoutlen = 5
+
 -- Register .mlir files as MLIR filetype
 vim.filetype.add({ extension = { mlir = "mlir" } })
