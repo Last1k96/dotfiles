@@ -28,3 +28,4 @@ git -C "$DOTFILES_DIR" remote set-url origin git@github.com:Last1k96/dotfiles.gi
 echo ""
 echo "=== Done! ==="
 echo "Log out and back in (or restart WSL) for zsh to take effect."
+echo "On first tmux launch, press prefix + I (Ctrl-A then Shift-I) to install plugins via TPM."

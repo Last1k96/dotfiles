@@ -70,7 +70,7 @@ vimcmd_visual_symbol = '[❮](bold fg:yellow)'
 
 [cmd_duration]
 min_time = 3000
-style = "fg:bg0 bg:bg1"
+style = "fg:fg4 bg:bg1"
 format = "[$duration]($style)"
 disabled = false
 
