@@ -67,7 +67,7 @@ install_cpp_tools() {
         cmake-curses-gui \
         ninja-build \
         gdb \
-        mold \
+        mold \ # fallback; latest version installed below
         valgrind \
         ccache \
         cppcheck \
@@ -86,6 +86,19 @@ install_cpp_tools() {
     sudo apt-get install -y linux-tools-common 2>/dev/null || true
 }
 run_step "C++ development tools" install_cpp_tools
+
+install_mold() {
+    local latest_ver
+    latest_ver=$(curl -s https://api.github.com/repos/rui314/mold/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+    if command -v mold &>/dev/null && [[ "$(mold --version)" == *"$latest_ver"* ]]; then return 0; fi
+    curl -fSL -o /tmp/mold.tar.gz \
+        "https://github.com/rui314/mold/releases/download/v${latest_ver}/mold-${latest_ver}-x86_64-linux.tar.gz"
+    tar -C /tmp -xzf /tmp/mold.tar.gz
+    sudo install -m 755 /tmp/mold-${latest_ver}-x86_64-linux/bin/mold /usr/local/bin/mold
+    sudo cp -r /tmp/mold-${latest_ver}-x86_64-linux/lib/mold /usr/local/lib/
+    rm -rf /tmp/mold.tar.gz /tmp/mold-${latest_ver}-x86_64-linux
+}
+run_step "mold (latest)" install_mold
 
 # Network filesystems
 run_step "Network filesystems" sudo apt-get install -y nfs-common cifs-utils
