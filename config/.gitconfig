@@ -1,10 +1,48 @@
 [user]
 	name = Maxim Kurin
 	email = kurinmaksim42@gmail.com
+	signingkey = ~/.ssh/id_ed25519.pub
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[rebase]
+	autosquash = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	algorithm = histogram
+	renames = true
+	renameLimit = 999999
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[core]
+	fsMonitor = false
+[submodule]
+	recurse = false
+[gpg]
+	format = ssh
+[commit]
+	gpgSign = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 [alias]
 	ch = checkout
 	br = branch
 	st = status
 	amend = commit --amend --no-edit
+	dog = log --color --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cred%d %Creset%s %Cgreen(%ar)' --date=short
+	tags = tag --sort=-creatordate
+	r = "!f() { git fetch upstream $1:$1 && git rebase $1; }; f"
+	pr = "!f(){ n=\"$1\"; if [ -z \"$n\" ]; then echo \"usage: git pr <number>\"; exit 2; fi; b=\"pr-$n\"; pr_fetch=\"+refs/pull/$n/head:refs/remotes/upstream/pr/$n\"; ( git config --get-all remote.upstream.fetch | grep -Fxq \"$pr_fetch\" || git config --add remote.upstream.fetch \"$pr_fetch\" ) && git fetch upstream \"refs/pull/$n/head:refs/remotes/upstream/pr/$n\" && if git show-ref --verify --quiet \"refs/heads/$b\"; then git switch \"$b\"; else git switch -c \"$b\" \"refs/remotes/upstream/pr/$n\"; fi && git config \"branch.$b.remote\" upstream && git config \"branch.$b.merge\" \"refs/pull/$n/head\" && git config \"branch.$b.pushRemote\" no_push && echo \"Checked out $b from upstream#${n}. git pull updates from the PR branch. Push disabled (pushRemote=no_push).\"; }; f"
 # NOTE: SSH url rewrite is set up by install.sh after the SSH key is
 # added to GitHub.  Run: git config --global url."git@github.com:".insteadOf "https://github.com/"
+
+# Work overlays can drop a conditional include here, e.g.:
+# [includeIf "gitdir:~/work/"]
+# 	path = ~/.gitconfig-work
