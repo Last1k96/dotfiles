@@ -155,6 +155,28 @@ install_tpm() {
 }
 run_step "TPM (Tmux Plugin Manager)" install_tpm
 
+install_rust() {
+    [ -x "$HOME/.cargo/bin/rustup" ] && return 0
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+        | sh -s -- -y --no-modify-path --default-toolchain stable
+}
+run_step "Rust toolchain (rustup)" install_rust
+
+install_cargo_crates() {
+    local cargo="$HOME/.cargo/bin/cargo"
+    [ -x "$cargo" ] || { echo "cargo not found; skipping crates"; return 1; }
+    local installed
+    installed=$("$cargo" install --list 2>/dev/null | awk '/^[a-zA-Z0-9_-]+ v/ {print $1}')
+    for crate in mprocs ytop; do
+        if printf '%s\n' "$installed" | grep -qx "$crate"; then
+            echo "$crate already installed"
+        else
+            "$cargo" install "$crate" || return 1
+        fi
+    done
+}
+run_step "Cargo crates (mprocs, ytop)" install_cargo_crates
+
 # SSH key for GitHub
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
     echo "Generating SSH key..."
