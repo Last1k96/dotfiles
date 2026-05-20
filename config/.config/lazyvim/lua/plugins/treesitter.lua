@@ -6,6 +6,8 @@ return {
         "bash", "c", "cpp", "diff", "html", "lua",
         "luadoc", "markdown", "markdown_inline",
         "vim", "vimdoc",
+        "json", "yaml", "toml",
+        "gitcommit", "gitignore", "git_rebase",
       },
       -- Disable highlighting for very large files (>100MB)
       highlight = {

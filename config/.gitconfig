@@ -6,8 +6,18 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[push]
+	autoSetupRemote = true
+	default = current
+[fetch]
+	prune = true
+	pruneTags = true
 [rebase]
 	autosquash = true
+	updateRefs = true
+[rerere]
+	enabled = true
+	autoupdate = true
 [merge]
 	conflictstyle = zdiff3
 [diff]
@@ -18,6 +28,10 @@
 	ui = auto
 [branch]
 	sort = -committerdate
+[help]
+	autocorrect = prompt
+[transfer]
+	fsckobjects = true
 [core]
 	fsMonitor = false
 [submodule]

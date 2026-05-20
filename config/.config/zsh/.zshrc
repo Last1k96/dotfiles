@@ -42,7 +42,15 @@ zsh_add_plugin "le0me55i/zsh-extract"
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
 compinit
 
 # Starship prompt (must be after compinit)
 eval "$(starship init zsh)"
+
+# zoxide (smart cd) — must be after compinit
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"

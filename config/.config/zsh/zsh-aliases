@@ -9,19 +9,31 @@ alias fgrep='fgrep --color=auto'
 alias df='df -h'     # human-readable sizes
 alias free='free -m' # show sizes in MB
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
 # git
 alias gitlatest='git checkout $(git describe --tags $(git rev-list --tags --max-count=1))'
 alias subupd='git submodule update --init --recursive'
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
+# ls — prefer eza when installed, otherwise fall back to GNU ls + dircolors
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza -la --icons --group-directories-first --git'
+    alias la='eza -a --icons'
+    alias l='eza --icons'
+    alias tree='eza --tree --icons'
+else
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+        alias dir='dir --color=auto'
+        alias vdir='vdir --color=auto'
+    fi
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
 fi
+
+# bat — Ubuntu installs the binary as `batcat`
+command -v batcat >/dev/null 2>&1 && alias bat='batcat'
+
+# fd — Ubuntu installs the binary as `fdfind`
+command -v fdfind >/dev/null 2>&1 && alias fd='fdfind'

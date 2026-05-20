@@ -31,6 +31,7 @@ sudo apt-get install -y \
     tmux \
     ripgrep \
     fd-find \
+    bat \
     fzf \
     jq \
     htop \
@@ -61,13 +62,15 @@ install_llvm() {
 run_step "LLVM 20" install_llvm
 
 install_cpp_tools() {
+    # mold is installed below from upstream for the latest version; the apt
+    # package is a fallback in case the upstream install step fails.
     sudo apt-get install -y \
         build-essential \
         cmake \
         cmake-curses-gui \
         ninja-build \
         gdb \
-        mold \ # fallback; latest version installed below
+        mold \
         valgrind \
         ccache \
         cppcheck \
@@ -108,6 +111,17 @@ install_starship() {
     curl -sS https://starship.rs/install.sh | sh -s -- --yes
 }
 run_step "Starship prompt" install_starship
+
+install_zoxide() {
+    command -v zoxide &>/dev/null && return 0
+    # Prefer apt (Ubuntu 22.04+); fall back to the official installer.
+    if sudo apt-get install -y zoxide 2>/dev/null; then
+        return 0
+    fi
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh \
+        | sh -s -- --bin-dir "$HOME/.local/bin"
+}
+run_step "zoxide" install_zoxide
 
 install_neovim() {
     command -v nvim &>/dev/null && return 0
@@ -167,7 +181,7 @@ install_cargo_crates() {
     [ -x "$cargo" ] || { echo "cargo not found; skipping crates"; return 1; }
     local installed
     installed=$("$cargo" install --list 2>/dev/null | awk '/^[a-zA-Z0-9_-]+ v/ {print $1}')
-    for crate in mprocs ytop; do
+    for crate in mprocs ytop eza; do
         if printf '%s\n' "$installed" | grep -qx "$crate"; then
             echo "$crate already installed"
         else
@@ -175,7 +189,7 @@ install_cargo_crates() {
         fi
     done
 }
-run_step "Cargo crates (mprocs, ytop)" install_cargo_crates
+run_step "Cargo crates (mprocs, ytop, eza)" install_cargo_crates
 
 # SSH key for GitHub
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then

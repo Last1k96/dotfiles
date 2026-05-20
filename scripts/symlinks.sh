@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_DIR="$HOME/code/dotfiles"
+: "${DOTFILES_DIR:=$HOME/code/dotfiles}"
 CONFIG_DIR="$DOTFILES_DIR/config"
 
 # Symlink a file: create parent dirs, back up existing files, then link.
