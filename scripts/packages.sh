@@ -191,23 +191,6 @@ install_cargo_crates() {
 }
 run_step "Cargo crates (mprocs, ytop, eza)" install_cargo_crates
 
-# SSH key for GitHub
-if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
-    echo "Generating SSH key..."
-    mkdir -p "$HOME/.ssh"
-    chmod 700 "$HOME/.ssh"
-    ssh-keygen -t ed25519 -C "kurinmaksim42@gmail.com" -f "$HOME/.ssh/id_ed25519" -N ""
-    eval "$(ssh-agent -s)"
-    ssh-add "$HOME/.ssh/id_ed25519"
-    echo ""
-    echo "=== Add this SSH key to GitHub ==="
-    echo "https://github.com/settings/ssh/new"
-    echo ""
-    cat "$HOME/.ssh/id_ed25519.pub"
-    echo ""
-    echo "=================================="
-fi
-
 # Set zsh as default shell (if not already)
 if [ "$SHELL" != "$(which zsh)" ]; then
     echo "Setting zsh as default shell..."

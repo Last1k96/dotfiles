@@ -15,17 +15,28 @@ keys on top).
 
 ## Installation
 
-Standalone (clones into `~/code/dotfiles`):
+The installer assumes you already have SSH access to GitHub.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/Last1k96/dotfiles/main/install.sh | bash
-```
+1. **Generate an SSH key and add it to GitHub.**
 
-Or, from an already-cloned checkout:
+   ```bash
+   ssh-keygen -t ed25519 -C "you@example.com" -f ~/.ssh/id_ed25519 -N ""
+   cat ~/.ssh/id_ed25519.pub
+   ```
 
-```bash
-bash install.sh
-```
+   Paste the printed key into <https://github.com/settings/ssh/new>.
+
+2. **Clone over SSH.**
+
+   ```bash
+   git clone git@github.com:Last1k96/dotfiles.git ~/code/dotfiles
+   ```
+
+3. **Run the installer.**
+
+   ```bash
+   bash ~/code/dotfiles/install.sh
+   ```
 
 The installer is idempotent — re-running it is safe and is the recommended
 way to retry failed steps.
@@ -42,7 +53,6 @@ way to retry failed steps.
 - Editor: Neovim (upstream tarball) + LazyVim config.
 - Misc: Yazi, Lazygit, tree-sitter CLI, TPM (tmux), Rust + cargo crates
   (`mprocs`, `ytop`, `eza`), NFS/CIFS clients.
-- SSH key generation for GitHub.
 - Sets `zsh` as the default shell.
 
 `scripts/symlinks.sh` then links the configs in `config/` into `$HOME` /
@@ -55,8 +65,6 @@ way to retry failed steps.
    `Shift-I`) to install plugins via TPM.
 3. **JIRA link command** — update `~/scripts/jira_config.lua` with your
    JIRA URL prefix to make the Neovim `:CopyJiraLink` command useful.
-4. **SSH key** — add `~/.ssh/id_ed25519.pub` to GitHub at
-   <https://github.com/settings/ssh/new>. The installer prints the key.
 
 ## Using as a submodule
 
