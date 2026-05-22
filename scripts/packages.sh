@@ -18,6 +18,26 @@ run_step() {
 
 sudo apt-get update && sudo apt-get upgrade -y
 
+# Pull current stable git from the git-core PPA before the main install. Ubuntu LTSes
+# (jammy: 2.34, noble: 2.43) ship git versions with a submodule remote-resolution bug
+# where `git submodule update --init` invokes `git fetch <remote> <sha>` using the
+# superproject's default remote name rather than the submodule's — breaking nested
+# superprojects whose tracking branch isn't called "origin". Fixed upstream in 2.49.
+install_git_ppa() {
+    if [ ! -f /etc/os-release ] || ! grep -q '^ID=ubuntu' /etc/os-release; then
+        echo "Not Ubuntu — skipping git-core PPA"
+        return 0
+    fi
+    if grep -rq "git-core/ppa" /etc/apt/sources.list.d/ 2>/dev/null; then
+        echo "git-core PPA already configured"
+        return 0
+    fi
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository -y ppa:git-core/ppa
+    sudo apt-get update
+}
+run_step "git-core PPA (latest git)" install_git_ppa
+
 # Base tools (critical — abort if this fails)
 sudo apt-get install -y \
     git \
