@@ -32,9 +32,12 @@ install_git_ppa() {
         echo "git-core PPA already configured"
         return 0
     fi
-    sudo apt-get install -y software-properties-common
-    sudo add-apt-repository -y ppa:git-core/ppa
-    sudo apt-get update
+    sudo apt-get install -y software-properties-common || return 1
+    # Fail-loud: add-apt-repository talks to api.launchpad.net via Python urllib and the
+    # silent-timeout failure mode (when http_proxy is bare host:port instead of URL form)
+    # otherwise hides itself behind the next apt-get update succeeding against stock repos.
+    sudo add-apt-repository -y ppa:git-core/ppa || return 1
+    sudo apt-get update || return 1
 }
 run_step "git-core PPA (latest git)" install_git_ppa
 
