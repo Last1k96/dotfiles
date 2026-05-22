@@ -36,6 +36,10 @@
 	fsMonitor = false
 [submodule]
 	recurse = false
+# Re-enable the file:// transport that git ≥ 2.38.1 disables by default (CVE-2022-39253) so
+# nested-submodule projects can reuse objects between sibling clones.
+[protocol "file"]
+	allow = always
 [gpg]
 	format = ssh
 [commit]
