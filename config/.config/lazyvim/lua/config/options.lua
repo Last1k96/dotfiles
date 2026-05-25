@@ -19,3 +19,18 @@ vim.opt.ttimeoutlen = 5
 
 -- Register .mlir files as MLIR filetype
 vim.filetype.add({ extension = { mlir = "mlir" } })
+
+-- System clipboard. Default to "unnamedplus" so y/d/p route through the +
+-- register. Under SSH there's no local X/Wayland to talk to, so swap the
+-- provider for Neovim's built-in OSC 52 escape — the terminal (e.g. Windows
+-- Terminal) puts the yanked text into the host clipboard. Tmux passes the
+-- escape through via `set-clipboard on` in .tmux.conf.
+vim.opt.clipboard = "unnamedplus"
+if vim.env.SSH_TTY ~= nil then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+  }
+end
