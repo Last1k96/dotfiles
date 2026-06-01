@@ -113,6 +113,20 @@ install_cpp_tools() {
 }
 run_step "C++ development tools" install_cpp_tools
 
+# Speed up `git status` in large/submoduled repos by giving git an external filesystem
+# monitor. Upstream git (and the git-core PPA's binary) ship only darwin/win32 backends
+# for the built-in `git fsmonitor--daemon`; on Linux, even microsoft-git's official .deb
+# doesn't enable the Linux backend. The portable answer is Facebook's `watchman` daemon
+# bridged via git's built-in fsmonitor-watchman Perl hook (shipped in
+# /usr/share/git-core/templates/hooks/fsmonitor-watchman.sample by the apt git package).
+# core.fsMonitor in the dotfile .gitconfig is set to that script's path; this step just
+# installs the watchman binary it talks to.
+install_git_fsmonitor() {
+    command -v watchman &>/dev/null && return 0
+    sudo apt-get install -y watchman
+}
+run_step "watchman (external fsmonitor for git)" install_git_fsmonitor
+
 install_mold() {
     local latest_ver
     latest_ver=$(curl -s https://api.github.com/repos/rui314/mold/releases/latest | jq -r '.tag_name' | sed 's/^v//')

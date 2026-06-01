@@ -33,7 +33,11 @@
 [transfer]
 	fsckobjects = true
 [core]
+	# The bundled watchman sample hook is expensive for large/nested worktrees.
 	fsMonitor = false
+	untrackedCache = true
+[feature]
+	manyFiles = true
 [submodule]
 	recurse = false
 # Re-enable the file:// transport that git ≥ 2.38.1 disables by default (CVE-2022-39253) so
